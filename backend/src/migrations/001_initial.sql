@@ -1,3 +1,4 @@
+BEGIN;
 
 CREATE TABLE users(
     id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
@@ -19,3 +20,4 @@ CREATE TABLE notes(
 
 CREATE INDEX notes_user_id_idx ON notes(user_id);
 
+COMMIT;
