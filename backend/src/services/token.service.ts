@@ -27,7 +27,7 @@ export function getUserIdFromToken(token: string): number {
         audience: "notes-api",
     })
 
-    if (payload === "string" || typeof payload.sub !== "string" || !/^[1-9]\d*$/.test(payload.sub)) {
+    if (typeof payload === "string" || typeof payload.sub !== "string" || !/^[1-9]\d*$/.test(payload.sub)) {
 
         throw new Error("Invalid token.");
 

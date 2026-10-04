@@ -2,7 +2,7 @@ import "dotenv/config";
 
 const DATABASE_URL = process.env.DATABASE_URL;
 const JWT_SECRET = process.env.JWT_SECRET;
-const PORT = Number(process.env.PORT) || 5000;
+const PORT = Number(process.env.PORT ?? 5000);
 
 
 if (!DATABASE_URL) {

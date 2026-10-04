@@ -43,9 +43,10 @@ export async function login(email: string, password: string) {
 
     return {
         user: {
-
+            id: user.id,
+            email: user.email,
         },
-        acessToken: createToken(user.id)
+        accessToken: createToken(user.id)
     }
 
 }
