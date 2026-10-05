@@ -16,7 +16,6 @@ export function createToken(userId: number): string {
         audience: "notes-api",
         expiresIn: "15m",
     })
-
 }
 
 export function getUserIdFromToken(token: string): number {
@@ -42,8 +41,5 @@ export function getUserIdFromToken(token: string): number {
     return userId;
 
 }
-
-
-
 
 

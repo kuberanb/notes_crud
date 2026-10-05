@@ -16,7 +16,6 @@ authRouter.use(rateLimit({
         message: "Too many attempts. Try again later.",
         data: null,
     },
-
 })
 );
 

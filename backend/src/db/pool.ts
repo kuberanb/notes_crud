@@ -16,3 +16,4 @@ export const pool = new Pool({
 pool.on("error", (error) => {
    console.error("Database connection error : ", error);
 })
+
