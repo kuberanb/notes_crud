@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "db:migrate": "node scripts/migrate.mjs",
+    "test:refresh": "pnpm build && node scripts/test-refresh.mjs",
     "dev": "nodemon --watch src --watch .env --ext ts,json --exec tsx src/server.ts",
     "build": "tsc",
     "typecheck": "tsc --noEmit",

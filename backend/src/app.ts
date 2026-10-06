@@ -2,6 +2,7 @@ import express from "express";
 import type { ErrorRequestHandler } from "express";
 import cors from "cors";
 import helmet from "helmet";
+import cookieParser from "cookie-parser";
 import "./config/env.js";
 import { authRouter } from "./routes/auth.routes.js";
 import { noteRouter } from "./routes/note.routes.js";
@@ -9,7 +10,8 @@ import { noteRouter } from "./routes/note.routes.js";
 const app = express();
 
 app.use(helmet());
-app.use(cors({ origin: process.env.WEB_ORIGIN }));
+app.use(cors({ origin: process.env.WEB_ORIGIN, credentials: true }));
+app.use(cookieParser());
 app.use(express.json({ limit: "512kb" }));
 
 app.get("/", (_req, res) => {

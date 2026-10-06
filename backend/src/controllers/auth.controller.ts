@@ -1,6 +1,14 @@
 import type { Request, Response } from "express";
 import * as authService from "../services/auth.service.js";
 import { validateAuth } from "../validators/auth.validation.js";
+import { startSession, useSession } from "../services/refresh.service.js";
+
+const cookieOptions = {
+  httpOnly: true,
+  secure: process.env.NODE_ENV === "production",
+  sameSite: "lax" as const,
+  path: "/api/auth",
+};
 
 export async function register(req: Request, res: Response) {
   const message = validateAuth(req.body, true);
@@ -82,6 +90,8 @@ export async function login(req: Request, res: Response) {
       return;
     }
 
+    const session = await startSession(result.user.id);
+    res.cookie("refreshToken", session.refreshToken, { ...cookieOptions, expires: session.expiresAt });
     res.json({
       status: true,
       message: "Logged in.",
@@ -96,4 +106,21 @@ export async function login(req: Request, res: Response) {
       data: null,
     });
   }
+}
+
+export async function refresh(req: Request, res: Response) {
+  const session = await useSession(req.cookies?.refreshToken);
+  if (!session) {
+    res.clearCookie("refreshToken", cookieOptions);
+    res.status(401).json({ status: false, message: "Please log in again.", data: null });
+    return;
+  }
+  res.cookie("refreshToken", session.refreshToken, { ...cookieOptions, expires: session.expiresAt });
+  res.json({ status: true, message: "Token refreshed.", data: { accessToken: session.accessToken } });
+}
+
+export async function logout(req: Request, res: Response) {
+  await useSession(req.cookies?.refreshToken, true);
+  res.clearCookie("refreshToken", cookieOptions);
+  res.json({ status: true, message: "Logged out.", data: null });
 }
