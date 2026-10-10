@@ -1,3 +1,3 @@
 
 
-import {createSlice}  from ""
+export { default, setCredentials, clearCredentials } from './features/auth/authSlice'
