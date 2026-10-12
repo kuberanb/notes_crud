@@ -119,7 +119,6 @@ export const api = createApi({
             }),
             invalidatesTags: ['Notes'],
         }),
-
         deleteNote: builder.mutation({
             query: (id) => ({
                 url: `/notes/${id}`,
@@ -127,9 +126,7 @@ export const api = createApi({
             }),
             invalidatesTags: ['Notes'],
         }),
-
     })
-
 })
 
 export const {
