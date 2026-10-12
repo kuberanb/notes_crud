@@ -22,7 +22,6 @@ export default function AuthForm() {
   const [isRegistration, setIsRegistration] = useState(false)
   const dispatch = useDispatch()
   const [errorMessage, setErrorMessage] = useState("")
-  const [successMessage, setSuccessMessage] = useState("")
 
   const [login, { isLoading: isLoggingIn }] = useLoginMutation()
   const [register, { isLoading: isRegistering }] = useRegisterMutation()
@@ -35,7 +34,6 @@ export default function AuthForm() {
     if (isLoading) return
 
     setErrorMessage("")
-    setSuccessMessage("")
 
     const form = event.currentTarget
     const formData = new FormData(form)
@@ -52,15 +50,12 @@ export default function AuthForm() {
         await register(credentials).unwrap()
 
         setIsRegistration(false)
-        setSuccessMessage("Account created successfully. Please log in.")
-        form.reset()
-      } else {
-
-        const result = await login(credentials).unwrap()
-        dispatch(setCredentials(result))
-
       }
 
+      const result = await login(credentials).unwrap()
+      setErrorMessage("")
+      form.reset()
+      dispatch(setCredentials(result))
 
     } catch (error) {
       setErrorMessage(getErrorMessage(error))
@@ -71,12 +66,11 @@ export default function AuthForm() {
   function toggleForm() {
     setIsRegistration((current) => !current)
     setErrorMessage("")
-    setSuccessMessage("")
   }
 
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-muted/40 px-4">
+    <div className="flex min-h-screen items-center justify-center px-4 py-8">
       <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle className="text-2xl">
@@ -118,7 +112,7 @@ export default function AuthForm() {
                 autoComplete={
                   isRegistration ? "new-password" : "current-password"
                 }
-                minLength={isRegistration ? 12 : 1}
+                minLength={isRegistration ? 9 : 1}
                 maxLength={128}
                 disabled={isLoading}
                 required
@@ -126,7 +120,7 @@ export default function AuthForm() {
 
               {isRegistration && (
                 <p className="text-sm text-muted-foreground">
-                  Password must contain at least 12 characters.
+                  Password must contain at least 9 characters.
                 </p>
               )}
             </div>
@@ -134,12 +128,6 @@ export default function AuthForm() {
             {errorMessage && (
               <p role="alert" className="text-sm text-destructive">
                 {errorMessage}
-              </p>
-            )}
-
-            {successMessage && (
-              <p role="status" className="text-sm text-green-600">
-                {successMessage}
               </p>
             )}
 

@@ -11,7 +11,7 @@ const registerSchema = z
         email,
         password: z
             .string()
-            .min(12, "Password must contain at least 12 characters.")
+            .min(9, "Password must contain at least 9 characters.")
             .max(128),
     })
     .strict();

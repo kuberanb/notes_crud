@@ -35,8 +35,8 @@ export async function list(userId: number, page: number) {
      FROM notes
      WHERE user_id = $1
      ORDER BY id DESC
-     LIMIT 20 OFFSET $2`,
-        [userId, (page - 1) * 20],
+     LIMIT 10 OFFSET $2`,
+        [userId, (page - 1) * 10],
     );
 
     return result.rows;

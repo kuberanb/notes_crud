@@ -69,7 +69,7 @@ export async function list(req: AuthRequest, res: Response) {
         res.json({
             status: true,
             message: "Notes fetched.",
-            data: { notes, page, pageSize: 20 },
+            data: { notes, page, pageSize: 10 },
         });
     } catch (error) {
         console.error(error);
