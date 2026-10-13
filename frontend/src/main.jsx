@@ -4,13 +4,39 @@ import './index.css'
 import App from './App.jsx'
 import { store } from './app/store.js'
 import { Provider } from 'react-redux'
+import { api } from './services/api'
+import { setCredentials } from './features/auth/authSlice'
+import { LoaderCircle } from "lucide-react";
 
-createRoot(document.getElementById('root')).render(
-  <StrictMode>
+const root = createRoot(document.getElementById('root'))
 
-    <Provider store={store}>
-      <App />
-    </Provider>
+async function startApp() {
+  root.render(
+    <div className="flex min-h-screen flex-col items-center justify-center gap-3">
+      <LoaderCircle className="h-8 w-8 animate-spin text-primary" />
+      <p className="text-sm text-muted-foreground">
+        Loading...
+      </p>
+    </div>
+  )
 
-  </StrictMode>,
-)
+  const { data } = await store.dispatch(
+    api.endpoints.refresh.initiate()
+  )
+
+  if (data?.accessToken) {
+    store.dispatch(
+      setCredentials({ accessToken: data.accessToken })
+    )
+  }
+
+  root.render(
+    <StrictMode>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </StrictMode>
+  )
+}
+
+startApp()
